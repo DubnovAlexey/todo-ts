@@ -34,7 +34,7 @@ npm run dev
 
 ## Deploy
 
-Every push to `master` builds the app and publishes it to GitHub Pages (`.github/workflows/deploy.yml`). One-time setup on GitHub: **Settings → Pages → Source: GitHub Actions**.
+Every push to `main` builds the app and publishes it to GitHub Pages (`.github/workflows/deploy.yml`). One-time setup on GitHub: **Settings → Pages → Source: GitHub Actions**.
 
 ## Roadmap
 

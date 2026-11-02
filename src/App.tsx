@@ -34,9 +34,11 @@ const App = () => {
     setTasks(tasks.filter(t => t.id !== id));
   };
 
-  // Редактирование текста задачи
+  // Редактирование текста задачи; пустой текст не сохраняем — остаётся прежний
   const editTask = (id: number, text: string) => {
-    setTasks(tasks.map(t => (t.id === id ? {...t, text} : t))); // новая копия, state не мутируем
+    const trimmed = text.trim();
+    if (!trimmed) return;
+    setTasks(tasks.map(t => (t.id === id ? {...t, text: trimmed} : t))); // новая копия, state не мутируем
   };
 
   // Отметка «сделано» / «не сделано»

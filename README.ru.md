@@ -34,7 +34,7 @@ npm run dev
 
 ## Публикация
 
-Каждый пуш в `master` собирает приложение и публикует его на GitHub Pages (`.github/workflows/deploy.yml`). Один раз на GitHub: **Settings → Pages → Source: GitHub Actions**.
+Каждый пуш в `main` собирает приложение и публикует его на GitHub Pages (`.github/workflows/deploy.yml`). Один раз на GitHub: **Settings → Pages → Source: GitHub Actions**.
 
 ## Планы
 
