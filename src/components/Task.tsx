@@ -2,16 +2,17 @@
    Компонент Task — отображает одну задачу (один элемент списка)
    --------------------------------------------------- */
 import {useRef, useState} from "react";
+import type {TaskItem} from "../types.ts";
 
 
 interface Props {
-  children: string,
-  index: number,
-  remove: (index: number) => void,
-  edit:(index: number, text: string) => void
+  task: TaskItem,
+  remove: (id: number) => void,
+  edit: (id: number, text: string) => void,
+  toggle: (id: number) => void
 }
 
-const Task = ({children, index, remove, edit}: Props) => {
+const Task = ({task, remove, edit, toggle}: Props) => {
   // Локальное состояние, отвечает за то, редактируем ли мы сейчас задачу
   const [isEditing, setIsEditing] = useState(false);
 
@@ -25,26 +26,27 @@ const Task = ({children, index, remove, edit}: Props) => {
 
   // Обработчик кнопки "Remove" — вызывает функцию удаления из родителя
   const handleClickRemove = () => {
-    remove(index); // передаём индекс задачи в функцию deleteTask()
+    remove(task.id); // передаём id задачи в функцию deleteTask()
   };
 
   // Обработчик кнопки "Save" — сохраняет изменения
   const handleClickSave = () => {
-    edit(index, textId.current!.value); // передаём индекс и новый текст
+    edit(task.id, textId.current!.value); // передаём id и новый текст
     setIsEditing(false); // возвращаемся из режима редактирования
   };
 
   /*
     Условный рендеринг:
     Если isEditing === true, показываем <textarea> и кнопку "Save".
-    Иначе — просто текст задачи и кнопки "Edit" и "Remove".
+    Иначе — флажок «сделано», текст задачи и кнопки "Edit" и "Remove".
   */
   if (isEditing) {
     return (
       <div className="box">
         <textarea
           ref={textId}           // сохраняем ссылку на элемент
-          defaultValue={children} // начальное значение — текущий текст задачи
+          defaultValue={task.text} // начальное значение — текущий текст задачи
+          autoFocus
         ></textarea>
         <button
           onClick={handleClickSave} // вызываем сохранение
@@ -56,9 +58,15 @@ const Task = ({children, index, remove, edit}: Props) => {
     );
   } else {
     return (
-      <div className="box">
-        <div>{children}</div>
-        {/* отображаем текст задачи */}
+      <div className={`box${task.done ? ' done' : ''}`}>
+        <label className="task-text">
+          <input
+            type="checkbox"
+            checked={task.done}
+            onChange={() => toggle(task.id)} // отмечаем «сделано» / «не сделано»
+          />
+          <span>{task.text}</span>
+        </label>
         <button
           onClick={handleClickEdit} // включаем режим редактирования
           className="btn light"

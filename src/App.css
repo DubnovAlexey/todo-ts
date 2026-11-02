@@ -1,8 +1,8 @@
 .field {
   display: flex;
   padding: 10px;
-  width: 29%;
-  margin-left: 35.5%;
+  width: min(100% - 20px, 480px); /* на телефоне почти во всю ширину, на компьютере не шире 480px */
+  margin: 0 auto;
   color: #fff;
   font-size: 1.3em;
   flex-direction: column;
@@ -86,4 +86,48 @@ textarea:focus{
 .btn.red:hover {
   background-color: #b6821a;
   border-color: #946912;
+}
+/* Фильтры All / Active / Done и счётчик */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.btn.filter {
+  margin: 0;
+  background-color: #6d79cd;
+  border: 2px solid #4f5bb0;
+}
+
+.btn.filter.active {
+  background-color: #4f5bb0;
+  border-color: #3a4590;
+}
+
+.counter {
+  font-size: .7em;
+}
+
+/* Текст задачи с флажком «сделано» */
+.task-text {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  overflow-wrap: anywhere;
+}
+
+.task-text input {
+  width: 1.1em;
+  height: 1.1em;
+  cursor: pointer;
+}
+
+.box.done .task-text span {
+  text-decoration: line-through;
+  opacity: .6;
 }

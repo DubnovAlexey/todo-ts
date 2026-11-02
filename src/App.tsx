@@ -1,29 +1,56 @@
 import './App.css';
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Task from "./components/Task.tsx";
+import type {TaskItem} from "./types.ts";
+
+// Ключ в localStorage с префиксом проекта: на dubnovalexey.github.io у всех проектов общее хранилище
+const STORAGE_KEY = 'todo-ts:tasks';
+
+type Filter = 'all' | 'active' | 'done';
+const FILTERS: Record<Filter, string> = {all: 'All', active: 'Active', done: 'Done'};
+
+// Читаем задачи из localStorage; если там пусто или испорчено — начинаем с пустого списка
+const loadTasks = (): TaskItem[] => {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]');
+    return Array.isArray(saved) ? saved : [];
+  } catch {
+    return [];
+  }
+};
 
 const App = () => {
-  // Состояние со списком задач
-  const [tasks, setTasks] = useState<string[]>([]);
+  // Состояние со списком задач (при первом рендере — из localStorage)
+  const [tasks, setTasks] = useState<TaskItem[]>(loadTasks);
+  const [filter, setFilter] = useState<Filter>('all');
 
-  // Удаление задачи по индексу
-  const deleteTask = (index: number) => {
-    const newTasks = [...tasks]; // копируем массив (важно не мутировать state напрямую)
-    newTasks.splice(index, 1);   // удаляем элемент
-    setTasks(newTasks);          // обновляем состояние
+  // Сохраняем задачи при каждом изменении
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+  }, [tasks]);
+
+  // Удаление задачи по id (по индексу нельзя: после удаления индексы сдвигаются)
+  const deleteTask = (id: number) => {
+    setTasks(tasks.filter(t => t.id !== id));
   };
 
-  // Редактирование задачи
-  const editTask = (index: number, text: string) => {
-    const newTasks = [...tasks];
-    newTasks[index] = text;      // заменяем старый текст новым
-    setTasks(newTasks);
+  // Редактирование текста задачи
+  const editTask = (id: number, text: string) => {
+    setTasks(tasks.map(t => (t.id === id ? {...t, text} : t))); // новая копия, state не мутируем
+  };
+
+  // Отметка «сделано» / «не сделано»
+  const toggleTask = (id: number) => {
+    setTasks(tasks.map(t => (t.id === id ? {...t, done: !t.done} : t)));
   };
 
   // Добавление новой задачи
   const addTask = () => {
-    setTasks([...tasks, 'New task']); // создаём новую копию массива с добавленной задачей
+    setTasks([...tasks, {id: Date.now(), text: 'New task', done: false}]);
   };
+
+  const visible = tasks.filter(t => (filter === 'all' ? true : filter === 'done' ? t.done : !t.done));
+  const left = tasks.filter(t => !t.done).length;
 
   // Возвращаем JSX — интерфейс для пользователя
   return (
@@ -35,21 +62,30 @@ const App = () => {
       >Add task
       </button>
 
+      {/* Фильтры и счётчик невыполненных задач */}
+      <div className="filters">
+        {(Object.keys(FILTERS) as Filter[]).map(f => (
+          <button
+            key={f}
+            onClick={() => setFilter(f)}
+            className={`btn filter${filter === f ? ' active' : ''}`}
+          >{FILTERS[f]}</button>
+        ))}
+        <span className="counter">{left} left</span>
+      </div>
+
       {/*
         Проходимся по массиву задач и для каждой создаём компонент Task.
-        Передаём функции remove и edit (но не вызываем их — просто передаём ссылку).
+        Передаём функции remove, edit и toggle (но не вызываем их — просто передаём ссылку).
       */}
-      {tasks.map((t, i) => (
+      {visible.map(t => (
         <Task
-          key={i}            // уникальный ключ для React
-          index={i}          // индекс задачи
+          key={t.id}          // уникальный и постоянный ключ для React
+          task={t}
           remove={deleteTask} // ссылка на функцию удаления
           edit={editTask}     // ссылка на функцию редактирования
-        >
-
-          {t}
-        </Task>   /*  передаём текст задачи как children
-        */
+          toggle={toggleTask} // ссылка на функцию отметки «сделано»
+        />
       ))}
     </div>
   );
