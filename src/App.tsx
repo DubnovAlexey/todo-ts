@@ -1,5 +1,6 @@
 import './App.css';
 import {useEffect, useState} from "react";
+import {parseTasks, createTask} from "./taskStorage.ts";
 import Task from "./components/Task.tsx";
 import type {TaskItem} from "./types.ts";
 
@@ -12,8 +13,7 @@ const FILTERS: Record<Filter, string> = {all: 'All', active: 'Active', done: 'Do
 // Читаем задачи из localStorage; если там пусто или испорчено — начинаем с пустого списка
 const loadTasks = (): TaskItem[] => {
   try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]');
-    return Array.isArray(saved) ? saved : [];
+    return parseTasks(localStorage.getItem(STORAGE_KEY));
   } catch {
     return [];
   }
@@ -26,29 +26,30 @@ const App = () => {
 
   // Сохраняем задачи при каждом изменении
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks)); }
+    catch { /* Ограниченное хранилище не мешает работе задач в текущей сессии. */ }
   }, [tasks]);
 
   // Удаление задачи по id (по индексу нельзя: после удаления индексы сдвигаются)
   const deleteTask = (id: number) => {
-    setTasks(tasks.filter(t => t.id !== id));
+    setTasks(current => current.filter(t => t.id !== id));
   };
 
   // Редактирование текста задачи; пустой текст не сохраняем — остаётся прежний
   const editTask = (id: number, text: string) => {
     const trimmed = text.trim();
     if (!trimmed) return;
-    setTasks(tasks.map(t => (t.id === id ? {...t, text: trimmed} : t))); // новая копия, state не мутируем
+    setTasks(current => current.map(t => (t.id === id ? {...t, text: trimmed} : t))); // новая копия, state не мутируем
   };
 
   // Отметка «сделано» / «не сделано»
   const toggleTask = (id: number) => {
-    setTasks(tasks.map(t => (t.id === id ? {...t, done: !t.done} : t)));
+    setTasks(current => current.map(t => (t.id === id ? {...t, done: !t.done} : t)));
   };
 
   // Добавление новой задачи
   const addTask = () => {
-    setTasks([...tasks, {id: Date.now(), text: 'New task', done: false}]);
+    setTasks(current => [...current, createTask(current)]);
   };
 
   const visible = tasks.filter(t => (filter === 'all' ? true : filter === 'done' ? t.done : !t.done));
@@ -71,6 +72,7 @@ const App = () => {
             key={f}
             onClick={() => setFilter(f)}
             className={`btn filter${filter === f ? ' active' : ''}`}
+            aria-pressed={filter === f}
           >{FILTERS[f]}</button>
         ))}
         <span className="counter">{left} left</span>

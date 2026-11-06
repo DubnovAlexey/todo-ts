@@ -31,7 +31,7 @@ const Task = ({task, remove, edit, toggle}: Props) => {
 
   // Обработчик кнопки "Save" — сохраняет изменения
   const handleClickSave = () => {
-    edit(task.id, textId.current!.value); // передаём id и новый текст
+    edit(task.id, textId.current?.value ?? task.text); // передаём id и новый текст
     setIsEditing(false); // возвращаемся из режима редактирования
   };
 
@@ -45,6 +45,7 @@ const Task = ({task, remove, edit, toggle}: Props) => {
       <div className="box">
         <textarea
           ref={textId}           // сохраняем ссылку на элемент
+          aria-label="Task text"
           defaultValue={task.text} // начальное значение — текущий текст задачи
           autoFocus
         ></textarea>

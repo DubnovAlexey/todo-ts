@@ -29,7 +29,7 @@ button.btn {
   cursor: pointer;
   font-size: 0.65em;
   color: #fff;
-  outline: none;
+  outline-offset: 3px;
 }
 
 textarea{
@@ -40,7 +40,7 @@ textarea{
   padding: 10px;
   font-size: 0.7em;
   width: 90%;
-  outline: none;
+  outline-offset: 3px;
 }
 
 textarea:focus{
@@ -132,3 +132,7 @@ textarea:focus{
   text-decoration: line-through;
   opacity: .6;
 }
+
+/* Светлая карточка сохраняет исходную палитру, текст задачи получает контраст. */
+.box { color: #363611; }
+.btn.success, .btn.light, .btn.red { color: #102321; }
