@@ -136,3 +136,20 @@ textarea:focus{
 /* Светлая карточка сохраняет исходную палитру, текст задачи получает контраст. */
 .box { color: #363611; }
 .btn.success, .btn.light, .btn.red { color: #102321; }
+
+/* Ссылка на исходный код — под списком, в розовом цвете кнопки «Add task» */
+.source-link {
+  display: block;
+  width: 100%;
+  margin-top: 18px;
+  text-align: center;
+  color: #c93964;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.source-link:hover,
+.source-link:focus-visible {
+  color: #ac254d;
+  text-decoration: underline;
+}

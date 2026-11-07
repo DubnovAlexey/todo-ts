@@ -91,6 +91,14 @@ const App = () => {
           toggle={toggleTask} // ссылка на функцию отметки «сделано»
         />
       ))}
+
+      {/* Ссылка на исходный код проекта */}
+      <a
+        className="source-link"
+        href="https://github.com/DubnovAlexey/todo-ts"
+        target="_blank"
+        rel="noopener noreferrer"
+      >Source code on GitHub</a>
     </div>
   );
 };
