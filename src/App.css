@@ -87,6 +87,21 @@ textarea:focus{
   background-color: #b6821a;
   border-color: #946912;
 }
+/* Заголовок и подсказка пустого списка: без них посетитель видел одну кнопку на жёлтом поле */
+.title {
+  margin: 10px 0 12px;
+  color: #363611;
+  font-size: 1.6em;
+  letter-spacing: .02em;
+}
+
+.empty {
+  margin: 6px 0 0;
+  color: #5a5a1e;
+  font-size: .75em;
+  text-align: center;
+}
+
 /* Фильтры All / Active / Done и счётчик */
 .filters {
   display: flex;

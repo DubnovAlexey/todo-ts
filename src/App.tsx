@@ -23,6 +23,8 @@ const App = () => {
   // Состояние со списком задач (при первом рендере — из localStorage)
   const [tasks, setTasks] = useState<TaskItem[]>(loadTasks);
   const [filter, setFilter] = useState<Filter>('all');
+  // Только что добавленная задача сразу открывается для ввода текста
+  const [editingId, setEditingId] = useState<number | null>(null);
 
   // Сохраняем задачи при каждом изменении
   useEffect(() => {
@@ -37,6 +39,7 @@ const App = () => {
 
   // Редактирование текста задачи; пустой текст не сохраняем — остаётся прежний
   const editTask = (id: number, text: string) => {
+    setEditingId(null);
     const trimmed = text.trim();
     if (!trimmed) return;
     setTasks(current => current.map(t => (t.id === id ? {...t, text: trimmed} : t))); // новая копия, state не мутируем
@@ -47,9 +50,12 @@ const App = () => {
     setTasks(current => current.map(t => (t.id === id ? {...t, done: !t.done} : t)));
   };
 
-  // Добавление новой задачи
+  // Добавление новой задачи: она сразу открывается для ввода, а фильтр «Done» её не прячет
   const addTask = () => {
-    setTasks(current => [...current, createTask(current)]);
+    const task = createTask(tasks);
+    setTasks([...tasks, task]);
+    setEditingId(task.id);
+    if (filter === 'done') setFilter('all');
   };
 
   const visible = tasks.filter(t => (filter === 'all' ? true : filter === 'done' ? t.done : !t.done));
@@ -58,6 +64,8 @@ const App = () => {
   // Возвращаем JSX — интерфейс для пользователя
   return (
     <div className="field">
+      <h1 className="title">To-do list</h1>
+
       {/* Кнопка добавления новой задачи */}
       <button
         onClick={addTask}
@@ -89,8 +97,18 @@ const App = () => {
           remove={deleteTask} // ссылка на функцию удаления
           edit={editTask}     // ссылка на функцию редактирования
           toggle={toggleTask} // ссылка на функцию отметки «сделано»
+          startEditing={t.id === editingId}
         />
       ))}
+
+      {/* Пустой список: подсказываем, с чего начать, вместо пустой страницы */}
+      {visible.length === 0 && (
+        <p className="empty">
+          {tasks.length === 0
+            ? 'No tasks yet. Press “Add task” and type what needs doing.'
+            : `No ${FILTERS[filter].toLowerCase()} tasks.`}
+        </p>
+      )}
 
       {/* Ссылка на исходный код проекта */}
       <a

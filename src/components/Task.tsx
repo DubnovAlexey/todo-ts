@@ -9,12 +9,13 @@ interface Props {
   task: TaskItem,
   remove: (id: number) => void,
   edit: (id: number, text: string) => void,
-  toggle: (id: number) => void
+  toggle: (id: number) => void,
+  startEditing?: boolean // новая задача сразу открывается для ввода текста
 }
 
-const Task = ({task, remove, edit, toggle}: Props) => {
+const Task = ({task, remove, edit, toggle, startEditing = false}: Props) => {
   // Локальное состояние, отвечает за то, редактируем ли мы сейчас задачу
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(startEditing);
 
   // useRef — создаём ссылку на <textarea>, чтобы позже прочитать значение
   const textId = useRef<HTMLTextAreaElement>(null);
@@ -48,6 +49,14 @@ const Task = ({task, remove, edit, toggle}: Props) => {
           aria-label="Task text"
           defaultValue={task.text} // начальное значение — текущий текст задачи
           autoFocus
+          onFocus={event => event.currentTarget.select()} // текст выделен: можно сразу печатать новый
+          onKeyDown={event => {
+            // Enter сохраняет, Shift+Enter — новая строка
+            if (event.key === 'Enter' && !event.shiftKey) {
+              event.preventDefault();
+              handleClickSave();
+            }
+          }}
         ></textarea>
         <button
           onClick={handleClickSave} // вызываем сохранение
