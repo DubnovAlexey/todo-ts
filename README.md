@@ -16,9 +16,9 @@ Add two tasks, edit one and mark it done. Switch between All, Active and Done, t
 
 ### Features
 
-- Add a task, edit its text in place, remove it.
+- Add a task, edit its text in place, remove it. A new task opens for typing at once; **Enter** saves, **Shift+Enter** starts a new line.
 - Tick a task as done; done tasks are crossed out.
-- Filters **All / Active / Done** and a counter of tasks left.
+- Filters **All / Active / Done** and a counter of tasks left. An empty list or filter shows a short hint instead of a blank page.
 - Tasks are saved in `localStorage` under the key `todo-ts:tasks`, so they survive a reload.
 - Fits a phone screen.
 
@@ -60,7 +60,7 @@ Every push to `main` or `master` builds the app and publishes it to GitHub Pages
 
 Proposals below are planned work, not existing features.
 
-- Visual: add a clear empty state, consistent keyboard focus and a custom task-card favicon.
+- Visual: consistent keyboard focus and a custom task-card favicon.
 - Engineering: add component interaction tests for editing, filtering and reload; show when storage cannot save changes.
 - Features: introduce due dates and keyboard-accessible reordering, followed by validated JSON import/export.
 
@@ -82,9 +82,9 @@ Proposals below are planned work, not existing features.
 
 ### Возможности
 
-- Добавить задачу, исправить текст на месте, удалить.
+- Добавить задачу, исправить текст на месте, удалить. Новая задача сразу открывается для ввода; **Enter** сохраняет, **Shift+Enter** переносит строку.
 - Отметить задачу сделанной — она зачёркивается.
-- Фильтры **All / Active / Done** и счётчик оставшихся задач.
+- Фильтры **All / Active / Done** и счётчик оставшихся задач. Пустой список или фильтр показывает короткую подсказку вместо пустой страницы.
 - Задачи хранятся в `localStorage` под ключом `todo-ts:tasks` и переживают перезагрузку.
 - Помещается на экране телефона.
 
@@ -126,7 +126,7 @@ npm run build
 
 Ниже перечислены предложения, а не уже реализованные функции.
 
-- Визуал: понятное пустое состояние, единый фокус с клавиатуры и собственный favicon карточки задачи.
+- Визуал: единый фокус с клавиатуры и собственный favicon карточки задачи.
 - Инженерия: тесты взаимодействий при правке, фильтрации и перезагрузке; видимый статус невозможности сохранения.
 - Функции: сроки и доступная с клавиатуры перестановка задач, затем импорт и экспорт JSON с валидацией.
 
@@ -150,9 +150,9 @@ npm run build
 
 ### יכולות
 
-- הוספת משימה, עריכת הטקסט במקום ומחיקה.
+- הוספת משימה, עריכת הטקסט במקום ומחיקה. משימה חדשה נפתחת מיד להקלדה; **Enter** שומר, **Shift+Enter** מתחיל שורה חדשה.
 - סימון משימה כבוצעה — היא מופיעה מחוקה בקו.
-- מסננים **All / Active / Done** ומונה של המשימות שנותרו.
+- מסננים **All / Active / Done** ומונה של המשימות שנותרו. רשימה או מסנן ריקים מציגים רמז קצר במקום דף ריק.
 - המשימות נשמרות ב-`localStorage` תחת המפתח `todo-ts:tasks`.
 - מתאים למסך טלפון.
 
@@ -183,7 +183,7 @@ npm run build
 
 הסעיפים הבאים הם הצעות להמשך, לא יכולות שכבר יושמו.
 
-- עיצוב: מצב ריק ברור, סימון מיקוד עקבי במקלדת וסמל לשונית של כרטיס משימה.
+- עיצוב: סימון מיקוד עקבי במקלדת וסמל לשונית של כרטיס משימה.
 - הנדסה: בדיקות אינטראקציה לעריכה, סינון ורענון; הודעה כשאי אפשר לשמור באחסון.
 - יכולות: תאריכי יעד וסידור משימות באמצעות המקלדת, ובהמשך יבוא ויצוא JSON עם אימות.
 
