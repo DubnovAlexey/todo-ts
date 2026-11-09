@@ -60,7 +60,7 @@ Every push to `main` or `master` builds the app and publishes it to GitHub Pages
 
 Proposals below are planned work, not existing features.
 
-- Visual: consistent keyboard focus and a custom task-card favicon.
+- Visual: consistent keyboard focus.
 - Engineering: add component interaction tests for editing, filtering and reload; show when storage cannot save changes.
 - Features: introduce due dates and keyboard-accessible reordering, followed by validated JSON import/export.
 
@@ -126,7 +126,7 @@ npm run build
 
 Ниже перечислены предложения, а не уже реализованные функции.
 
-- Визуал: единый фокус с клавиатуры и собственный favicon карточки задачи.
+- Визуал: единый фокус с клавиатуры.
 - Инженерия: тесты взаимодействий при правке, фильтрации и перезагрузке; видимый статус невозможности сохранения.
 - Функции: сроки и доступная с клавиатуры перестановка задач, затем импорт и экспорт JSON с валидацией.
 
@@ -183,7 +183,7 @@ npm run build
 
 הסעיפים הבאים הם הצעות להמשך, לא יכולות שכבר יושמו.
 
-- עיצוב: סימון מיקוד עקבי במקלדת וסמל לשונית של כרטיס משימה.
+- עיצוב: סימון מיקוד עקבי במקלדת.
 - הנדסה: בדיקות אינטראקציה לעריכה, סינון ורענון; הודעה כשאי אפשר לשמור באחסון.
 - יכולות: תאריכי יעד וסידור משימות באמצעות המקלדת, ובהמשך יבוא ויצוא JSON עם אימות.
 
